@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Verified - HealthHub</title>
+    <style>
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6; color: #2c3e50; margin: 0; padding: 0; background-color:
+      #f8f9fa; } .container { max-width: 600px; margin: 0 auto; padding: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); } .header { background:
+      linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%); padding: 25px;
+      text-align: center; color: white; border-top-left-radius: 8px;
+      border-top-right-radius: 8px; } .logo { margin-bottom: 10px; } .content {
+      padding: 30px; background-color: #ffffff; border-left: 1px solid #e6e9ec;
+      border-right: 1px solid #e6e9ec; } .footer { padding: 20px; text-align:
+      center; font-size: 12px; color: #7f8c8d; background-color: #f2f4f6;
+      border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border:
+      1px solid #e6e9ec; } .button { display: inline-block; padding: 12px 24px;
+      background: linear-gradient(to right, #3498db, #2980b9); color: white;
+      text-decoration: none; border-radius: 30px; margin: 20px 0; font-weight:
+      bold; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); transition: transform
+      0.3s, box-shadow 0.3s; } .button:hover { transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); } .success-icon { text-align:
+      center; margin: 20px 0; font-size: 60px; color: #27ae60; } .highlight {
+      color: #3498db; font-weight: bold; } .divider { height: 1px;
+      background-color: #e6e9ec; margin: 20px 0; } .feature-list {
+      background-color: #f8f9fa; border-radius: 8px; padding: 15px 15px 15px
+      35px; margin: 20px 0; border-left: 4px solid #3498db; } .feature-list li {
+      padding: 5px 0; } .hospital-icon { font-size: 24px; margin-right: 10px;
+      color: #3498db; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <span class="hospital-icon">⚕️</span>
+        </div>
+        <h1>HealthHub</h1>
+        <p>Hospital Management System</p>
+      </div>
+      <div class="content">
+        <div class="success-icon">✓</div>
+        <h2 style="text-align: center; color: #27ae60;">Account
+          Verified!</h2>
+
+        <p>Hello Dr. {{name}},</p>
+        <p>
+          Your
+          <span class="highlight">HealthHub</span>
+          healthcare provider account is now fully activated. You can begin
+          accessing patient records and using all features of our hospital
+          information system.
+        </p>
+
+        <div class="divider"></div>
+
+        <p style="text-align: center">
+          <a href="{{loginLink}}" class="button">Login to your Dashboard</a>
+        </p>
+
+        <p>
+          Here's what you can do next:
+        </p>
+        <div class="feature-list">
+          <ul>
+            <li>View and manage your assigned patients</li>
+            <li>Create and manage healthcare programs</li>
+            <li>Schedule appointments and procedures</li>
+          </ul>
+        </div>
+
+        <p>
+          If you have any questions or need technical assistance, please contact
+          our IT support team at info@healthhub.org or call our technical
+          support hotline at +254742796954
+        </p>
+        <p>
+          Best regards,<br />
+          <span class="highlight">HealthHub Administration</span>
+        </p>
+      </div>
+      <div class="footer">
+        <p>
+          This email was sent to
+          {{email}}
+          because you were registered in the HealthHub Health Information System
+          System.
+        </p>
+        <p>© {{currentYear}} HealthHub Medical Center. All rights reserved.</p>
+        <p>
+          <a href="{{unsubscribeLink}}">Notification Preferences</a>
+          |
+          <a href="{{privacyPolicyLink}}">HIPAA Privacy Policy</a>
+          |
+          <a href="{{termsOfServiceLink}}">Terms of Service</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

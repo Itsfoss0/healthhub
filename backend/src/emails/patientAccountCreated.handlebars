@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your HealthHub Account Has Been Created</title>
+    <style>
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6; color: #2c3e50; margin: 0; padding: 0; background-color:
+      #f8f9fa; } .container { max-width: 600px; margin: 0 auto; padding: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); } .header { background:
+      linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%); padding: 25px;
+      text-align: center; color: white; border-top-left-radius: 8px;
+      border-top-right-radius: 8px; } .logo { margin-bottom: 10px; } .content {
+      padding: 30px; background-color: #ffffff; border-left: 1px solid #e6e9ec;
+      border-right: 1px solid #e6e9ec; } .footer { padding: 20px; text-align:
+      center; font-size: 12px; color: #7f8c8d; background-color: #f2f4f6;
+      border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border:
+      1px solid #e6e9ec; } .button { display: inline-block; padding: 12px 24px;
+      background: linear-gradient(to right, #3498db, #2980b9); color: white;
+      text-decoration: none; border-radius: 30px; margin: 20px 0; font-weight:
+      bold; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); transition: transform
+      0.3s, box-shadow 0.3s; } .button:hover { transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); } .highlight { color: #3498db;
+      font-weight: bold; } .divider { height: 1px; background-color: #e6e9ec;
+      margin: 20px 0; } .credentials-box { background-color: #f8f9fa; padding:
+      15px; border-radius: 5px; border: 1px solid #e6e9ec; margin: 15px 0; }
+      .hospital-icon { font-size: 24px; margin-right: 10px; color: #ffffff; }
+      .info-box { background-color: #e1f5fe; border-left: 4px solid #03a9f4;
+      padding: 12px; margin: 15px 0; border-radius: 3px; } .warning-box {
+      background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 12px;
+      margin: 15px 0; border-radius: 3px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <span class="hospital-icon">⚕️</span>
+        </div>
+        <h1>HealthHub</h1>
+        <p>Welcome to Your Health Journey</p>
+      </div>
+      <div class="content">
+        <p>Hello {{name}},</p>
+        <p>
+          Welcome to HealthHub! We're pleased to inform you that
+          <span class="highlight">Dr. {{doctorName}}</span>
+          has created a patient account for you in our healthcare system.
+        </p>
+
+        <div class="credentials-box">
+          <h2>Your Account Information</h2>
+          <p><strong>Email:</strong> {{email}}</p>
+          <p><strong>Temporary Password:</strong> {{tempPassword}}</p>
+        </div>
+
+        <div class="warning-box">
+          <p><strong>Important:</strong>
+            For security reasons, you will be required to change your password
+            when you first log in.</p>
+        </div>
+
+        <p>With your HealthHub account, you can:</p>
+        <ul>
+          <li>View your medical records and test results</li>
+          <li>Message your care team securely</li>
+          <li>Access personalized health resources</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <p>
+          To access your account, please click the button below:
+        </p>
+
+        <p style="text-align: center">
+          <a href="{{loginLink}}" class="button">Login to Your Account</a>
+        </p>
+
+        <div class="info-box">
+          <p>For your security, this temporary password will expire in 48 hours.
+            Please log in and change your password as soon as possible.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <p>
+          If you have any questions or need assistance with your account, please
+          contact our support team at +254742796954 or reply to this email.
+        </p>
+
+        <p>
+          We look forward to supporting your healthcare journey,<br />
+          <span class="highlight">The HealthHub Team</span>
+        </p>
+      </div>
+      <div class="footer">
+        <p>
+          This email was sent to
+          {{email}}
+          because a healthcare account was created for you at HealthHub Medical
+          Center.
+        </p>
+        <p>© {{currentYear}} HealthHub Medical Center. All rights reserved.</p>
+        <p>
+          <a href="{{notificationPreferencesLink}}">Notification Preferences</a>
+          |
+          <a href="{{privacyPolicyLink}}">HIPAA Privacy Policy</a>
+          |
+          <a href="{{termsOfServiceLink}}">Terms of Service</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
