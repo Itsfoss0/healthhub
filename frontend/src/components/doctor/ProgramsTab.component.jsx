@@ -107,7 +107,7 @@ export function ProgramsTab ({
     };
     const resp = await programService.addPatientToProgram(
       programId,
-      {patientId},
+      { patientId },
       auth
     );
     if (resp.status === 200) {

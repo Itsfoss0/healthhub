@@ -44,9 +44,17 @@ async function refreshAccessToken () {
   }
 }
 
+async function verifyUser (token, userId) {
+  const res = await axios.get(
+    `${BASE_URL}/verify/${userId}?token=${token}`
+  );
+  return res;
+}
+
 export default {
   loginUser,
   forgotPassword,
   verifyResetToken,
-  refreshAccessToken
+  refreshAccessToken,
+  verifyUser
 };

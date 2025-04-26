@@ -6,6 +6,8 @@ import ForgotPassword from '../pages/ForgotPassword.page';
 import LoginPage from '../pages/LoginPage.page';
 import PatientDashboard from '../components/patient/PatientDashboard.component';
 import DoctorDashboard from '../pages/DoctorDashboard.component';
+import NotFound from '../pages/NotFound.page';
+import VerificationStatus from '../components/auth/VerificationStatus.component';
 
 export default function AppRouter () {
   return (
@@ -17,6 +19,8 @@ export default function AppRouter () {
       <Route path='/auth/signup' element={<SignupPage />} />
       <Route path='/auth/login' element={<LoginPage />} />
       <Route path='/auth/forgot' element={<ForgotPassword />} />
+      <Route path='/auth/verify/:id' element={<VerificationStatus />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 }
