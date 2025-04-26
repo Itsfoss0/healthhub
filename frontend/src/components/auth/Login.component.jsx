@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { ArrowRight, Eye, EyeOff, User, UserCog } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import authService from '../../services/auth.service';
 import useAuth from '../../hooks/authHook.hook';
+import { useToastContext } from '../../context/ToastContext.component';
 
 export default function LoginComponent () {
+  const { toast } = useToastContext();
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loginAs, setLoginAs] = useState('doctor');
   const [formData, setFormData] = useState({
@@ -38,14 +42,37 @@ export default function LoginComponent () {
       const resp = await authService.loginUser(payload);
 
       if (resp.status === 200) {
-        console.log('Login successful');
-        login(resp.data);
+        toast({
+          tittle: 'Authenticated',
+          description: 'Logged in Successfully',
+          variant: 'success'
+        });
+        if (loginAs === 'doctor') {
+          login(resp.data);
+          return navigate('/dashboard');
+        }
+        return navigate('/patient');
       } else if (resp.status === 404) {
         setError('The email you provided does not exist');
+        toast({
+          title: 'User not found',
+          description: 'The email you provided does not exist',
+          variant: 'error'
+        });
       } else if (resp.status === 401) {
+        toast({
+          title: 'Incorrect Password',
+          description: 'The password you provided does not match',
+          variant: 'error'
+        });
         setError('The password you provided is incorrect');
       } else {
         setError('An unexpected error occurred. Please try again.');
+        toast({
+          title: 'Server Error',
+          description: 'Your request could not be completeds',
+          variant: 'error'
+        });
       }
     } catch (err) {
       console.error('Login error:', err);

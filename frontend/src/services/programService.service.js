@@ -1,12 +1,12 @@
-import axios from 'axios';
-const BASE_URL = 'http://localhost:5000/api/v1/programs';
+import axios from "axios";
+const BASE_URL = "http://localhost:5000/api/v1/programs";
 
-async function getAllPrograms (auth) {
+async function getAllPrograms(auth) {
   try {
     const resp = await axios.get(BASE_URL, {
       headers: {
-        Authorization: `Bearer ${auth}`
-      }
+        Authorization: `Bearer ${auth}`,
+      },
     });
     return resp;
   } catch (error) {
@@ -15,12 +15,12 @@ async function getAllPrograms (auth) {
   }
 }
 
-async function getProgramById (programId, auth) {
+async function getProgramById(programId, auth) {
   try {
     const resp = await axios.get(`${BASE_URL}/${programId}`, {
       headers: {
-        Authorization: `Bearer ${auth}`
-      }
+        Authorization: `Bearer ${auth}`,
+      },
     });
     return resp;
   } catch (error) {
@@ -29,13 +29,13 @@ async function getProgramById (programId, auth) {
   }
 }
 
-async function addNewProgram (programDetails, auth) {
+async function addNewProgram(programDetails, auth) {
   try {
     const resp = await axios.post(BASE_URL, programDetails, {
       headers: {
         Authorization: `Bearer ${auth}`,
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
     return resp;
   } catch (error) {
@@ -44,13 +44,13 @@ async function addNewProgram (programDetails, auth) {
   }
 }
 
-async function updateProgramDetails (programId, programDetails, auth) {
+async function updateProgramDetails(programId, programDetails, auth) {
   try {
     const resp = await axios.put(`${BASE_URL}/${programId}`, programDetails, {
       headers: {
         Authorization: `Bearer ${auth}`,
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
     return resp;
   } catch (error) {
@@ -59,12 +59,15 @@ async function updateProgramDetails (programId, programDetails, auth) {
   }
 }
 
-async function deleteProgram (programId, auth) {
+async function deleteProgram(programId, auth) {
   try {
     const resp = await axios.delete(`${BASE_URL}/${programId}`, {
       headers: {
-        Authorization: `Bearer ${auth}`
-      }
+        Authorization: `Bearer ${auth}`,
+      },
+      params: {
+        forceRemove: true,
+      },
     });
     return resp;
   } catch (error) {
@@ -73,7 +76,7 @@ async function deleteProgram (programId, auth) {
   }
 }
 
-async function addPatientToProgram (programId, patientId, auth) {
+async function addPatientToProgram(programId, patientId, auth) {
   try {
     const resp = await axios.post(
       `${BASE_URL}/${programId}/participant`,
@@ -81,8 +84,8 @@ async function addPatientToProgram (programId, patientId, auth) {
       {
         headers: {
           Authorization: `Bearer ${auth}`,
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       }
     );
     return resp;
@@ -92,7 +95,7 @@ async function addPatientToProgram (programId, patientId, auth) {
   }
 }
 
-async function updatePatientStatus (programId, patientId, data, auth) {
+async function updatePatientStatus(programId, patientId, data, auth) {
   try {
     const resp = await axios.put(
       `${BASE_URL}/${programId}/participants/${patientId}`,
@@ -100,8 +103,8 @@ async function updatePatientStatus (programId, patientId, data, auth) {
       {
         headers: {
           Authorization: `Bearer ${auth}`,
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       }
     );
     return resp;
@@ -111,14 +114,17 @@ async function updatePatientStatus (programId, patientId, data, auth) {
   }
 }
 
-async function removePatientFromProgram (programId, patientId, auth) {
+async function removePatientFromProgram(programId, patientId, auth) {
   try {
     const resp = await axios.delete(
       `${BASE_URL}/${programId}/participants/${patientId}`,
       {
         headers: {
-          Authorization: `Bearer ${auth}`
-        }
+          Authorization: `Bearer ${auth}`,
+        },
+        params: {
+          forceRemove: true,
+        },
       }
     );
     return resp;
@@ -128,12 +134,12 @@ async function removePatientFromProgram (programId, patientId, auth) {
   }
 }
 
-async function getProgramStats (programId, auth) {
+async function getProgramStats(programId, auth) {
   try {
     const resp = await axios.get(`${BASE_URL}/${programId}/stats`, {
       headers: {
-        Authorization: `Bearer ${auth}`
-      }
+        Authorization: `Bearer ${auth}`,
+      },
     });
     return resp;
   } catch (error) {
@@ -151,5 +157,5 @@ export default {
   addPatientToProgram,
   updatePatientStatus,
   removePatientFromProgram,
-  getProgramStats
+  getProgramStats,
 };

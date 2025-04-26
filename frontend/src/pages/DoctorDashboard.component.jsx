@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { useState } from 'react';
 import {
   TabsContent,
@@ -9,10 +11,19 @@ import { User } from 'lucide-react';
 import { OverviewTab } from '../components/doctor/OverviewTab.component';
 import { PatientsTab } from '../components/doctor/PatientsTab.component';
 import { ProgramsTab } from '../components/doctor/ProgramsTab.component';
-import { useMockData } from '../hooks/mockHook.hook';
+import useDashboardDetails from '../hooks/dashboard.hook';
 
 export default function DoctorDashboard () {
-  const { doctor, patients, programs, stats, loading, error } = useMockData();
+  const {
+    doctor,
+    patients,
+    programs,
+    enrollments,
+    setEnrollments,
+    stats,
+    loading,
+    error
+  } = useDashboardDetails();
   const [activeTab, setActiveTab] = useState('overview');
 
   if (loading) {
@@ -46,10 +57,10 @@ export default function DoctorDashboard () {
                 </div>
                 <div>
                   <p className='text-sm font-medium text-gray-900'>
-                    {doctor.name}
+                    {doctor.firstName} {doctor.lastName}
                   </p>
                   <p className='text-xs text-gray-500'>
-                    {doctor.specialization}
+                    Doctor
                   </p>
                 </div>
               </div>
@@ -90,11 +101,21 @@ export default function DoctorDashboard () {
           </TabsContent>
 
           <TabsContent value='patients'>
-            <PatientsTab patients={patients} />
+            <PatientsTab
+              patients={patients}
+              programs={programs}
+              enrollments={enrollments}
+              setEnrollments={setEnrollments}
+            />
           </TabsContent>
 
           <TabsContent value='programs'>
-            <ProgramsTab programs={programs} />
+            <ProgramsTab
+              programs={programs}
+              patients={patients}
+              enrollments={enrollments}
+              setEnrollments={setEnrollments}
+            />
           </TabsContent>
         </Tabs>
       </div>

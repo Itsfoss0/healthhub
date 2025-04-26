@@ -83,7 +83,7 @@ async function deletePatient (patientId, auth) {
   try {
     const resp = await axios.delete(`${BASE_URL}/${patientId}`, {
       headers: {
-        Authorization: `Beaer ${auth}`
+        Authorization: `Bearer ${auth}`
       }
     });
     return resp;

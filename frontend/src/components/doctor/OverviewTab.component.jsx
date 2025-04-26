@@ -53,7 +53,7 @@ export function OverviewTab ({ patients, programs, stats }) {
                   className='px-6 py-4 flex justify-between items-center'
                 >
                   <div>
-                    <p className='font-medium text-gray-900'>{patient.name}</p>
+                    <p className='font-medium text-gray-900'>{patient.firstName}</p>
                     <p className='text-sm text-gray-500'>{patient.email}</p>
                   </div>
                   <div className='text-sm text-gray-500'>
@@ -83,8 +83,8 @@ export function OverviewTab ({ patients, programs, stats }) {
           <CardContent className='p-0'>
             <div className='divide-y divide-gray-200'>
               {programs
-                .filter((program) => program.status === 'active')
-                .slice(0, 5)
+                .filter((program) => program.isActive)
+                .slice(0, 3)
                 .map((program) => (
                   <div key={program.id} className='px-6 py-4'>
                     <div className='flex justify-between items-center'>
@@ -109,7 +109,7 @@ export function OverviewTab ({ patients, programs, stats }) {
                     </div>
                   </div>
                 ))}
-              {programs.filter((program) => program.status === 'active')
+              {programs.filter((program) => program.isActive)
                 .length === 0 && (
                   <div className='px-6 py-4 text-gray-500 text-center'>
                     No active programs found

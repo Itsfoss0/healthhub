@@ -13,9 +13,9 @@ export function DashboardHeader ({ doctor }) {
               </div>
               <div>
                 <p className='text-sm font-medium text-gray-900'>
-                  {doctor.name}
+                  {doctor.firstName} {doctor.lastName}
                 </p>
-                <p className='text-xs text-gray-500'>{doctor.specialization}</p>
+                <p className='text-xs text-gray-500'>Doctor</p>
               </div>
             </div>
           )}

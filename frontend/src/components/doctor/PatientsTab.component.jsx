@@ -1,30 +1,100 @@
 import { useState } from 'react';
 import { Card, CardContent } from '../ui/Card.component';
 import { PatientForm } from './Forms.component';
-import { PatientEditModal } from './Modal.component';
+import { PatientEditModal, PatientProgramsModal } from './Modal.component';
 import Button from '../ui/Button.component';
-import { UserPlus, Edit, Trash2 } from 'lucide-react';
+import { UserPlus, Edit, Trash2, Clipboard } from 'lucide-react';
+import useAuth from '../../hooks/authHook.hook';
+import patientService from '../../services/patientService.service';
+import { useToastContext } from '../../context/ToastContext.component';
 
-export function PatientsTab ({ patients: initialPatients }) {
+export function PatientsTab ({
+  patients: initialPatients,
+  programs,
+  enrollments,
+  setEnrollments
+}) {
+  const { toast } = useToastContext();
+  const { getUser } = useAuth();
+  const user = getUser();
+  const auth = user.accessToken;
   const [patients, setPatients] = useState(initialPatients);
   const [showAddPatientForm, setShowAddPatientForm] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [viewProgramsPatient, setViewProgramsPatient] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleAddPatient = (newPatient) => {
-    setPatients([...patients, { ...newPatient, id: Date.now().toString() }]);
+  const handleAddPatient = async (newPatient) => {
+    const resp = await patientService.addPatient(newPatient, auth);
+    if (resp.status === 201) {
+      toast({
+        title: 'Patient Added',
+        description: `${newPatient.firstName} has been added sucessfully`,
+        variant: 'success'
+      });
+      setPatients([...patients, { ...newPatient, id: Date.now().toString() }]);
+      console.log(resp.data);
+    } else if (resp.status === 409) {
+      toast({
+        title: 'Could not add Patient',
+        description: ` Patient with email ${newPatient.email} exists already`,
+        variant: 'error'
+      });
+    } else {
+      toast({
+        title: 'An Error occured',
+        description: 'An Uknown error has occured',
+        variant: 'warning'
+      });
+    }
     setShowAddPatientForm(false);
   };
 
-  const handleUpdatePatient = (updatedPatient) => {
-    setPatients(
-      patients.map((p) => (p.id === updatedPatient.id ? updatedPatient : p))
+  const handleUpdatePatient = async (updatedPatient) => {
+    const resp = await patientService.updatePatientDetails(
+      updatedPatient.id,
+      updatedPatient,
+      auth
     );
+    if (resp.status === 200) {
+      toast({
+        title: 'Patient Detials updated',
+        description: `${updatedPatient.firstName} has been updated sucessfully`,
+        variant: 'success'
+      });
+      setPatients(
+        patients.map((p) => (p.id === updatedPatient.id ? updatedPatient : p))
+      );
+    }
     setSelectedPatient(null);
   };
 
-  const handleDeletePatient = (patientId) => {
-    setPatients(patients.filter((patient) => patient.id !== patientId));
+  const handleDeletePatient = async (patientId) => {
+    const resp = await patientService.deletePatient(patientId, auth);
+    if (resp.status === 200) {
+      toast({
+        title: 'Patient Detials updated',
+        description: 'Patient deleted sucessfully',
+        variant: 'success'
+      });
+      setEnrollments(
+        enrollments.filter((enrollment) => enrollment.patientId !== patientId)
+      );
+      setPatients(patients.filter((patient) => patient.id !== patientId));
+    } else {
+      toast({
+        title: 'Error deleting patient',
+        description: 'Could not Delete patient, login and reload to retry',
+        variant: 'error'
+      });
+    }
+    console.log(resp);
+  };
+
+  const getProgramCount = (patientId) => {
+    return enrollments.filter(
+      (enrollment) => enrollment.patientId === patientId
+    ).length;
   };
 
   return (
@@ -74,7 +144,7 @@ export function PatientsTab ({ patients: initialPatients }) {
                   Date of Birth
                 </th>
                 <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                  Gender
+                  Programs
                 </th>
                 <th className='px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
                   Actions
@@ -85,19 +155,25 @@ export function PatientsTab ({ patients: initialPatients }) {
               {patients.map((patient) => (
                 <tr key={patient.id}>
                   <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                    {patient.name}
+                    {patient.firstName} {patient.lastName}
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
                     {patient.email}
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                    {patient.phone}
+                    {patient.phoneNumber}
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
                     {new Date(patient.dateOfBirth).toLocaleDateString()}
                   </td>
-                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize'>
-                    {patient.gender}
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                    <button
+                      onClick={() => setViewProgramsPatient(patient)}
+                      className='text-blue-600 hover:text-blue-900 hover:underline flex items-center'
+                    >
+                      <Clipboard className='h-4 w-4 mr-1' />
+                      {getProgramCount(patient.id)} Programs
+                    </button>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                     <div className='flex justify-end space-x-2'>
@@ -137,6 +213,17 @@ export function PatientsTab ({ patients: initialPatients }) {
           patient={selectedPatient}
           onUpdate={handleUpdatePatient}
           onCancel={() => setSelectedPatient(null)}
+        />
+      )}
+
+      {viewProgramsPatient && (
+        <PatientProgramsModal
+          patient={viewProgramsPatient}
+          programs={programs}
+          enrollments={enrollments.filter(
+            (e) => e.patientId === viewProgramsPatient.id
+          )}
+          onClose={() => setViewProgramsPatient(null)}
         />
       )}
 

@@ -7,9 +7,10 @@ export function PatientForm ({ patient, onSubmit, onCancel }) {
   const [formData, setFormData] = useState(
     patient || {
       id: '',
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
-      phone: '',
+      phoneNumber: '',
       dateOfBirth: '',
       gender: '',
       address: '',
@@ -35,17 +36,32 @@ export function PatientForm ({ patient, onSubmit, onCancel }) {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         <div>
           <label className='block text-sm font-medium text-gray-700 mb-1'>
-            Full Name
+            First Name
           </label>
           <Input
             type='text'
-            name='name'
-            value={formData.name}
+            name='firstName'
+            value={formData.firstName}
             onChange={handleChange}
             className='w-full'
             required
           />
         </div>
+
+        <div>
+          <label className='block text-sm font-medium text-gray-700 mb-1'>
+            Last Name
+          </label>
+          <Input
+            type='text'
+            name='lastName'
+            value={formData.lastName}
+            onChange={handleChange}
+            className='w-full'
+            required
+          />
+        </div>
+
         <div>
           <label className='block text-sm font-medium text-gray-700 mb-1'>
             Email
@@ -65,8 +81,8 @@ export function PatientForm ({ patient, onSubmit, onCancel }) {
           </label>
           <Input
             type='tel'
-            name='phone'
-            value={formData.phone}
+            name='phoneNumber'
+            value={formData.phoneNumber}
             onChange={handleChange}
             className='w-full'
             required
@@ -141,7 +157,7 @@ export function ProgramForm ({ program, onSubmit, onCancel }) {
       startDate: '',
       endDate: '',
       capacity: 0,
-      status: 'active',
+      type: 'inpatient',
       createdAt: new Date().toISOString()
     }
   );
@@ -177,18 +193,19 @@ export function ProgramForm ({ program, onSubmit, onCancel }) {
         </div>
         <div>
           <label className='block text-sm font-medium text-gray-700 mb-1'>
-            Status
+            Type
           </label>
           <select
-            name='status'
+            name='type'
             value={formData.status}
             onChange={handleChange}
             className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
             required
           >
-            <option value='active'>Active</option>
-            <option value='pending'>Pending</option>
-            <option value='completed'>Completed</option>
+            <option value='inpatient'>Inpatient</option>
+            <option value='outpatient'>Outpatient</option>
+            <option value='specialized'>Specialized</option>
+            <option value='other'>Other</option>
           </select>
         </div>
         <div className='md:col-span-2'>
@@ -252,6 +269,7 @@ export function ProgramForm ({ program, onSubmit, onCancel }) {
             required
           />
         </div>
+
       </div>
       <div className='mt-6 flex justify-end space-x-3'>
         <Button type='button' variant='outline' onClick={onCancel}>

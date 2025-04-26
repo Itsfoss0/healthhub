@@ -231,3 +231,58 @@ export const mockPatient = {
   createdAt: '2024-01-01T10:00:00',
   updatedAt: '2025-03-15T14:30:00'
 };
+
+export const mockEnrollments = [
+  {
+    id: 'enr001',
+    patientId: '680b6851f96c62fddcfad26a',
+    programId: '680b45c0d18e24c36816494a',
+    enrollmentDate: '2025-04-25T13:28:41.772Z',
+    status: 'active'
+  },
+  {
+    id: 'enr002',
+    patientId: '680ccbe8a20997459f041038',
+    programId: '680cccf6a20997459f041058',
+    enrollmentDate: '2025-04-26T09:15:00.000Z',
+    status: 'active'
+  },
+  {
+    id: 'enr003',
+    patientId: '680ccc00a20997459f04103e',
+    programId: '680ccca5a20997459f041052',
+    enrollmentDate: '2025-04-26T10:30:00.000Z',
+    status: 'active'
+  },
+  {
+    id: 'enr004',
+    patientId: '680ccc12a20997459f041044',
+    programId: '680ccc87a20997459f04104f',
+    enrollmentDate: '2025-04-25T14:45:00.000Z',
+    status: 'active'
+  },
+  {
+    id: 'enr005',
+    patientId: '680ccc2ea20997459f04104a',
+    programId: '680ccd20a20997459f04105b',
+    enrollmentDate: '2025-04-26T08:20:00.000Z',
+    status: 'pending'
+  },
+  {
+    id: 'enr006',
+    patientId: '680ccc12a20997459f041044',
+    programId: '680cccd4a20997459f041055',
+    enrollmentDate: '2025-04-24T11:10:00.000Z',
+    status: 'completed',
+    completionDate: '2025-04-25T16:30:00.000Z'
+  },
+  {
+    id: 'enr007',
+    patientId: '680b83c9e109ab85c425afe7',
+    programId: '680b45c0d18e24c36816494a',
+    enrollmentDate: '2025-04-24T09:00:00.000Z',
+    status: 'withdrawn',
+    withdrawalDate: '2025-04-25T10:15:00.000Z',
+    withdrawalReason: 'Patient request'
+  }
+];

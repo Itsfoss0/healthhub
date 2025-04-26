@@ -1,30 +1,124 @@
 import { useState } from 'react';
-import { Edit, Plus, Trash2 } from 'lucide-react';
+import { Edit, Plus, Trash2, UserPlus } from 'lucide-react';
 import { Card, CardContent } from '../ui/Card.component';
 import { ProgramForm } from './Forms.component';
-import { ProgramEditModal } from './Modal.component';
+import {
+  EnrollPatientModal,
+  ProgramEditModal,
+  ProgramEnrollmentsModal
+} from './Modal.component';
 import Button from '../ui/Button.component';
+import programService from '../../services/programService.service';
+import useAuth from '../../hooks/authHook.hook';
+import { useToastContext } from '../../context/ToastContext.component';
 
-export function ProgramsTab ({ programs: initialPrograms }) {
+export function ProgramsTab ({
+  programs: initialPrograms,
+  patients,
+  enrollments,
+  setEnrollments
+}) {
+  const { getUser } = useAuth();
+  const { toast } = useToastContext();
+  const user = getUser();
+  const auth = user.accessToken;
   const [programs, setPrograms] = useState(initialPrograms);
   const [showAddProgramForm, setShowAddProgramForm] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState(null);
+  const [enrollProgram, setEnrollProgram] = useState(null);
+  const [viewEnrollmentsProgram, setViewEnrollmentsProgram] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleAddProgram = (newProgram) => {
-    setPrograms([...programs, { ...newProgram, id: Date.now().toString() }]);
+  const handleAddProgram = async (newProgram) => {
+    const resp = await programService.addNewProgram(newProgram, auth);
+    if (resp.status === 201) {
+      toast({
+        title: 'Program Added',
+        description: `${newProgram.name} has been added`,
+        variant: 'sucess'
+      });
+      setPrograms([...programs, { ...newProgram, id: Date.now().toString() }]);
+    } else if (resp.status === 403 || resp.status === 401) {
+      toast({
+        title: 'Could not add Program',
+        description: 'Program has not been added, reload and try again',
+        variant: 'warning'
+      });
+    }
     setShowAddProgramForm(false);
   };
 
-  const handleUpdateProgram = (updatedProgram) => {
-    setPrograms(
-      programs.map((p) => (p.id === updatedProgram.id ? updatedProgram : p))
+  const handleUpdateProgram = async (updatedProgram) => {
+    const resp = await programService.updateProgramDetails(
+      updatedProgram.id,
+      updatedProgram,
+      auth
     );
+    if (resp.status === 200) {
+      toast({
+        title: 'Program Updated',
+        description: `${updatedProgram.name} has been updated`,
+        variant: 'sucess'
+      });
+
+      setPrograms(
+        programs.map((p) => (p.id === updatedProgram.id ? updatedProgram : p))
+      );
+    } else {
+      toast({
+        title: `Could not update ${updatedProgram.name}`,
+        description: 'An error occured when trying to update the program',
+        variant: 'warning'
+      });
+    }
+
     setSelectedProgram(null);
   };
 
-  const handleDeleteProgram = (programId) => {
-    setPrograms(programs.filter((program) => program.id !== programId));
+  const handleDeleteProgram = async (programId) => {
+    const resp = await programService.deleteProgram(programId, auth);
+    if (resp.status === 200) {
+      toast({
+        title: 'Program Delete',
+        description: 'The program has been delete sucessfully',
+        variant: 'success'
+      });
+      setEnrollments(
+        enrollments.filter((enrollment) => enrollment.programId !== programId)
+      );
+      setPrograms(programs.filter((program) => program.id !== programId));
+    } else {
+      toast({
+        title: 'Could not delete',
+        description: 'An error occured when trying to delete the program',
+        variant: 'error'
+      });
+    }
+    console.log(resp);
+  };
+
+  const handleEnrollPatient = (programId, patientId) => {
+    const newEnrollment = {
+      id: Date.now().toString(),
+      programId,
+      patientId,
+      enrollmentDate: new Date().toISOString(),
+      status: 'active'
+    };
+    setEnrollments([...enrollments, newEnrollment]);
+    setEnrollProgram(null);
+  };
+
+  const handleRemoveEnrollment = (enrollmentId) => {
+    setEnrollments(
+      enrollments.filter((enrollment) => enrollment.id !== enrollmentId)
+    );
+  };
+
+  const getEnrolledCount = (programId) => {
+    return enrollments.filter(
+      (enrollment) => enrollment.programId === programId
+    ).length;
   };
 
   return (
@@ -74,7 +168,7 @@ export function ProgramsTab ({ programs: initialPrograms }) {
                   Status
                 </th>
                 <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                  Capacity
+                  Enrolled / Capacity
                 </th>
                 <th className='px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
                   Actions
@@ -97,22 +191,50 @@ export function ProgramsTab ({ programs: initialPrograms }) {
                   <td className='px-6 py-4 whitespace-nowrap'>
                     <span
                       className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                        program.status === 'active'
+                        program.isActive
                           ? 'bg-green-100 text-green-800'
-                          : program.status === 'pending'
+                          : program.isActive === false
                           ? 'bg-yellow-100 text-yellow-800'
                           : 'bg-gray-100 text-gray-800'
                       }`}
                     >
-                      {program.status.charAt(0).toUpperCase() +
-                        program.status.slice(1)}
+                      {program.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                    {program.capacity}
+                    <button
+                      onClick={() => setViewEnrollmentsProgram(program)}
+                      className='text-blue-600 hover:text-blue-900 hover:underline'
+                    >
+                      {getEnrolledCount(program.id)} / {program.capacity}
+                    </button>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                     <div className='flex justify-end space-x-2'>
+                      <button
+                        className='text-green-600 hover:text-green-900'
+                        onClick={() => setEnrollProgram(program)}
+                        disabled={
+                          program.isActive === false ||
+                          getEnrolledCount(program.id) >= program.capacity
+                        }
+                        title={
+                          program.isActive !== true
+                            ? 'Only active programs can enroll patients'
+                            : getEnrolledCount(program.id) >= program.capacity
+                              ? 'Program is at full capacity'
+                              : 'Enroll a patient'
+                        }
+                      >
+                        <UserPlus
+                          className={`h-5 w-5 ${
+                            !program.isActive ||
+                            getEnrolledCount(program.id) >= program.capacity
+                              ? 'opacity-50'
+                              : ''
+                          }`}
+                        />
+                      </button>
                       <button
                         className='text-blue-600 hover:text-blue-900'
                         onClick={() => setSelectedProgram(program)}
@@ -149,6 +271,28 @@ export function ProgramsTab ({ programs: initialPrograms }) {
           program={selectedProgram}
           onUpdate={handleUpdateProgram}
           onCancel={() => setSelectedProgram(null)}
+        />
+      )}
+
+      {enrollProgram && (
+        <EnrollPatientModal
+          program={enrollProgram}
+          patients={patients}
+          enrollments={enrollments}
+          onEnroll={handleEnrollPatient}
+          onCancel={() => setEnrollProgram(null)}
+        />
+      )}
+
+      {viewEnrollmentsProgram && (
+        <ProgramEnrollmentsModal
+          program={viewEnrollmentsProgram}
+          patients={patients}
+          enrollments={enrollments.filter(
+            (e) => e.programId === viewEnrollmentsProgram.id
+          )}
+          onRemoveEnrollment={handleRemoveEnrollment}
+          onClose={() => setViewEnrollmentsProgram(null)}
         />
       )}
 
