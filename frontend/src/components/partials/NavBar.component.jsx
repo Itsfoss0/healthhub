@@ -1,7 +1,9 @@
 import { X, Menu } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function NavBar () {
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -41,7 +43,7 @@ export default function NavBar () {
               >
                 Contact
               </a>
-              <button className='ml-4 px-6 py-3 bg-white text-blue-600 font-medium text-lg rounded-full shadow hover:shadow-lg transition transform hover:-translate-y-0.5'>
+              <button onClick={() => navigate('/auth/login')} className='ml-4 px-6 py-3 bg-white text-blue-600 font-medium text-lg rounded-full shadow hover:shadow-lg transition transform hover:-translate-y-0.5'>
                 Log In
               </button>
             </div>
@@ -84,7 +86,7 @@ export default function NavBar () {
               >
                 Contact
               </a>
-              <button className='w-full mt-2 px-4 py-3 bg-white text-blue-600 font-medium text-lg rounded-full shadow'>
+              <button onClick={() => navigate('/auth/login')} className='w-full mt-2 px-4 py-3 bg-white text-blue-600 font-medium text-lg rounded-full shadow'>
                 Log In
               </button>
             </div>

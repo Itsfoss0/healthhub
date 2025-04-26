@@ -97,7 +97,7 @@ export function ProgramsTab ({
     console.log(resp);
   };
 
-  const handleEnrollPatient = (programId, patientId) => {
+  const handleEnrollPatient = async (programId, patientId) => {
     const newEnrollment = {
       id: Date.now().toString(),
       programId,
@@ -105,8 +105,27 @@ export function ProgramsTab ({
       enrollmentDate: new Date().toISOString(),
       status: 'active'
     };
-    setEnrollments([...enrollments, newEnrollment]);
-    setEnrollProgram(null);
+    const resp = await programService.addPatientToProgram(
+      programId,
+      {patientId},
+      auth
+    );
+    if (resp.status === 200) {
+      toast({
+        title: 'Enrolled to Program',
+        description: 'Patient has been enrolled to program sucessfully',
+        variant: 'success'
+      });
+      console.log('Patient Enrolled to program');
+      setEnrollments([...enrollments, newEnrollment]);
+      setEnrollProgram(null);
+    } else {
+      toast({
+        title: 'Patient not enrolled',
+        description: 'An error occured while trying to enroll patient',
+        variant: 'error'
+      });
+    }
   };
 
   const handleRemoveEnrollment = (enrollmentId) => {

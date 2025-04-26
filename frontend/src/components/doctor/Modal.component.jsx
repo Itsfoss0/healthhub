@@ -161,7 +161,7 @@ export function EnrollPatientModal ({
     .map((enrollment) => enrollment.patientId);
 
   const availablePatients = patients.filter(
-    (patient) => !enrolledPatientIds.includes(patient.id)
+    (patient) => !enrolledPatientIds.includes(patient.id) && patient.isActive
   );
 
   const filteredPatients = availablePatients.filter(
@@ -214,7 +214,9 @@ export function EnrollPatientModal ({
                       className='p-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 cursor-pointer'
                       onClick={() => onEnroll(program.id, patient.id)}
                     >
-                      <div className='font-medium'>{patient.firstName} {patient.lastName}</div>
+                      <div className='font-medium'>
+                        {patient.firstName} {patient.lastName}
+                      </div>
                       <div className='text-sm text-gray-500'>{patient.email}</div>
                     </div>
                   ))}
