@@ -208,7 +208,7 @@ const deleteProgram = async (req, res) => {
       return res.status(404).json({ error: 'Program not found' });
     }
 
-    if (program.coordinator !== req.user.id) {
+    if (program.coordinator.toString() !== req.user.id) {
       return res
         .status(403)
         .json({ error: "Cannot delete this program because you don't own it" });

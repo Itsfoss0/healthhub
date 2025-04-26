@@ -98,7 +98,7 @@ const loginToAccount = async (req, res) => {
         .json({ error: 'Can only login as doctor or patient' });
     }
 
-    if (user === undefined) {
+    if (!user) {
       return res.status(404).json({ message: 'no user with such email' });
     }
 
