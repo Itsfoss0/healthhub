@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function HeroSection () {
+  const navigate = useNavigate();
   return (
     <>
       <div className='bg-gradient-to-r from-blue-400 to-blue-600 text-white'>
@@ -13,7 +16,10 @@ export default function HeroSection () {
                 programs and clients
               </p>
               <div className='flex flex-wrap gap-6'>
-                <button className='px-8 py-4 bg-white text-blue-600 font-medium text-xl rounded-full shadow-lg hover:shadow-xl transition transform hover:-translate-y-1'>
+                <button
+                  onClick={() => navigate('/auth/signup')}
+                  className='px-8 py-4 bg-white text-blue-600 font-medium text-xl rounded-full shadow-lg hover:shadow-xl transition transform hover:-translate-y-1'
+                >
                   Get Started
                 </button>
                 <button className='px-8 py-4 bg-transparent border-2 border-white text-white text-xl font-medium rounded-full hover:bg-white hover:text-blue-600 transition'>
