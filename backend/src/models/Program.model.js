@@ -72,8 +72,11 @@ const programSchema = new mongoose.Schema(
 
 programSchema.set('toJSON', {
   transform: (doc, returnedDoc) => {
-    returnedDoc.id = returnedDoc._id.toString();
-    delete returnedDoc._id;
+    if (returnedDoc._id) {
+      returnedDoc.id = returnedDoc._id.toString();
+      delete returnedDoc._id;
+    }
+
     delete returnedDoc.__v;
   }
 });
