@@ -47,8 +47,8 @@ export default function LoginComponent () {
           description: 'Logged in Successfully',
           variant: 'success'
         });
+        login(resp.data);
         if (loginAs === 'doctor') {
-          login(resp.data);
           return navigate('/dashboard');
         }
         return navigate('/patient');

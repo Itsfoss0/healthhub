@@ -8,14 +8,31 @@ import PatientDashboard from '../components/patient/PatientDashboard.component';
 import DoctorDashboard from '../pages/DoctorDashboard.component';
 import NotFound from '../pages/NotFound.page';
 import VerificationStatus from '../components/auth/VerificationStatus.component';
+import LoginRequired from './privateRouter.route';
 
 export default function AppRouter () {
   return (
     <Routes>
       <Route path='' index element={<LandingPage />} />
       <Route path='/demo' element={<DemoPage />} />
-      <Route path='/patient' element={<PatientDashboard />} />
-      <Route path='/dashboard' element={<DoctorDashboard />} />
+      <Route
+        path='/patient'
+        element={
+          <LoginRequired>
+            {' '}
+            <PatientDashboard />{' '}
+          </LoginRequired>
+        }
+      />
+      <Route
+        path='/dashboard'
+        element={
+          <LoginRequired>
+            {' '}
+            <DoctorDashboard />{' '}
+          </LoginRequired>
+        }
+      />
       <Route path='/auth/signup' element={<SignupPage />} />
       <Route path='/auth/login' element={<LoginPage />} />
       <Route path='/auth/forgot' element={<ForgotPassword />} />

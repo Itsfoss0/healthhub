@@ -7,6 +7,8 @@ import { formatDate } from '../../lib/utils';
 export default function ProgramHistory ({ programHistory }) {
   const [filter, setFilter] = useState('all');
 
+  console.log(programHistory);
+
   const filteredPrograms =
     filter === 'all'
       ? programHistory

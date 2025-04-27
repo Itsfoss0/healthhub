@@ -10,12 +10,14 @@ import {
   Settings,
   LogOut
 } from 'lucide-react';
+import useAuth from '../../hooks/authHook.hook';
 
 export default function MobileMenu ({
   activeMobileMenu,
   setActiveMobileMenu,
   setActiveSection
 }) {
+  const { logout } = useAuth();
   return (
     <>
       <div className='md:hidden fixed bottom-6 right-6 z-50'>
@@ -91,7 +93,7 @@ export default function MobileMenu ({
                 </button>
 
                 <button
-                  onClick={() => console.log('Logout clicked')}
+                  onClick={() => logout()}
                   className='flex items-center w-full p-3 rounded-lg hover:bg-gray-100'
                 >
                   <LogOut size={20} className='text-emerald-600' />

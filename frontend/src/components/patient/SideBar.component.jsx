@@ -9,6 +9,7 @@ import {
   LogOut,
   Menu
 } from 'lucide-react';
+import useAuth from '../../hooks/authHook.hook';
 
 export default function Sidebar ({
   sidebarOpen,
@@ -16,6 +17,8 @@ export default function Sidebar ({
   activeSection,
   setActiveSection
 }) {
+  const { logout } = useAuth();
+
   return (
     <aside
       className={`bg-emerald-700 text-white ${
@@ -93,7 +96,7 @@ export default function Sidebar ({
           className={`flex items-center ${
             sidebarOpen ? 'w-full' : 'w-12 justify-center'
           } p-3 rounded-lg hover:bg-emerald-600 transition-colors`}
-          onClick={() => console.log('Logout clicked')}
+          onClick={() => logout()}
         >
           <LogOut size={sidebarOpen ? 20 : 24} />
           {sidebarOpen && <span className='ml-4'>Logout</span>}

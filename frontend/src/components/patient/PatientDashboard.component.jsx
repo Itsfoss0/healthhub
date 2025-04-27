@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Sidebar from './SideBar.component';
 import MobileMenu from './MobileMenu.component';
 import TopNavigation from './TopNavigation.component';
@@ -7,18 +7,16 @@ import ProgramHistory from './ProgramHistory.component';
 import AssignedDoctors from './AssignedDoctors.component';
 import MedicalRecords from './MedicalRecords.component';
 import ProfileSettings from './ProfileSettings.component';
-import { mockPatient } from '../../lib/mockData';
+import usePatientProfile from '../../hooks/patientProfile.hook';
+import { Spinner } from '../ui/Spinner.component';
+import FirstTimePasswordUpdate from '../auth/FirstTimePasswordUpdate.component';
 
 export default function PatientDashboard () {
+  const { patient, isLoading, error } = usePatientProfile();
   const [activeSection, setActiveSection] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
-  const [patient, setPatient] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-
-  useEffect(() => {
-    setPatient(mockPatient);
-  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -29,12 +27,16 @@ export default function PatientDashboard () {
     setShowEditProfileModal(false);
   };
 
-  if (!patient) {
+  if (isLoading) {
     return (
       <div className='flex h-screen items-center justify-center'>
-        Loading...
+        <Spinner text='Loading profile, please wait' />
       </div>
     );
+  }
+
+  if (error) {
+    return <div>An error occured when trying to load your profile</div>;
   }
 
   return (

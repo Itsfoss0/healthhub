@@ -2,10 +2,12 @@
 
 import { createContext, useState, useEffect, useCallback } from 'react';
 import authService from '../services/auth.service';
+import { useToastContext } from './ToastContext.component';
 
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
+  const { toast } = useToastContext();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -16,6 +18,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
+    window.localStorage.removeItem('healthhubUser');
     setUser(userData);
     window.localStorage.setItem('healthhubUser', JSON.stringify(userData));
   };
@@ -23,6 +26,17 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     window.localStorage.removeItem('healthhubUser');
+    toast({
+      title: 'Log out',
+      description: 'Logged out user successfully',
+      variant: 'success'
+    });
+  };
+
+  const updateUser = (newDetails) => {
+    setUser(null);
+    window.localStorage.removeItem('healthhubUser');
+    window.localStorage.setItem(newDetails);
   };
 
   const getUser = () => {
@@ -66,7 +80,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, getUser, refreshToken }}
+      value={{ user, login, logout, getUser, refreshToken, updateUser }}
     >
       {children}
     </AuthContext.Provider>
