@@ -2,7 +2,7 @@
 
 ![Landing page](./assets/landing.png)
 
-Healthhub is a health information management system running on the web. It allows doctors to create and manage programs and patients. A doctor registers an account, verifies their profile and create programs, add patients to the programs and manage them. You can checkout a demo of the product [here](https://youtu.be/BbDMrWGPHbo)
+Healthhub is a health information management system running on the web. It allows doctors to create and manage programs and patients. A doctor registers an account, verifies their profile and create programs, add patients to the programs and manage them. You can checkout a demo of the product [here](https://drive.google.com/file/d/1GLK6vQaFT7othYx6we86Kin4WRFunFFB/view?usp=sharing)
 
 ![Dashboard](./assets/dashboard.png)
 
